@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>Happy Birthday</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Fredoka:wght@500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg-top:#ffd9e6;
@@ -56,26 +56,57 @@
     pointer-events:none;
   }
 
-  /* ---------- prompt text ---------- */
-  .prompt{
+  /* ---------- top header (title + prompt) ---------- */
+  .top-header{
     position:fixed;
-    top:max(18px, env(safe-area-inset-top));
+    top:max(16px, env(safe-area-inset-top));
     left:50%;
     transform:translateX(-50%);
+    width:100%;
+    max-width:640px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    padding:0 14px;
+    z-index:30;
+    pointer-events:none;
+  }
+
+  .hbd-title{
+    margin:0;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    line-height:1;
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:clamp(30px, 9vw, 68px);
+    opacity:0;
+    transform:translateY(-10px) scale(0.96);
+    transition:opacity .9s ease, transform .9s cubic-bezier(.34,1.2,.64,1);
+    filter:drop-shadow(0 3px 0 rgba(122,59,82,0.16)) drop-shadow(0 8px 16px rgba(122,59,82,0.18));
+  }
+  .hbd-title.show{ opacity:1; transform:translateY(0) scale(1); }
+  .hbd-word{
+    display:inline-flex;
+    margin:0 10px 4px;
+  }
+  .hbd-title .c-pink{ color:var(--frost-1); -webkit-text-stroke:1px rgba(122,59,82,0.14); }
+  .hbd-title .c-cream{ color:var(--cake-1); -webkit-text-stroke:1px rgba(122,59,82,0.18); }
+
+  .prompt{
     font-family:'Dancing Script',cursive;
     font-weight:700;
-    font-size:clamp(22px, 5.5vw, 34px);
+    font-size:clamp(20px, 5vw, 30px);
     color:var(--ink);
     text-align:center;
     opacity:0;
     transition:opacity 1s ease;
-    z-index:30;
     text-shadow:0 2px 10px rgba(255,255,255,0.6);
-    pointer-events:none;
-    padding:0 12px;
   }
   .prompt.show{ opacity:1; animation:bob 2.4s ease-in-out infinite; }
-  @keyframes bob{ 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(-6px);} }
+  @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
 
   /* ---------- balloons ---------- */
   .balloons{
@@ -429,7 +460,9 @@
 
   /* short viewports / landscape phones */
   @media (max-height:520px) and (orientation:landscape){
-    .prompt{ font-size:clamp(18px,4vw,24px); top:8px; }
+    .top-header{ top:8px; gap:4px; }
+    .hbd-title{ font-size:clamp(22px, 6vw, 36px); }
+    .prompt{ font-size:clamp(16px,3.4vw,22px); }
     .scene{ height:min(88dvh, 300px); padding-bottom:2dvh; }
     .stage{ transform:scale(0.95); transform-origin:center bottom; }
     .letter-card{ padding:24px 20px 22px; max-height:92dvh; }
@@ -455,6 +488,7 @@
   @media (min-width:900px){
     .scene{ max-width:640px; }
     .prompt{ font-size:clamp(26px, 3.4vw, 40px); }
+    .hbd-title{ font-size:clamp(46px, 7vw, 90px); }
     .letter-card{ max-width:680px; }
   }
 </style>
@@ -463,7 +497,10 @@
 
   <div class="backdrop-glow"></div>
 
-  <div class="prompt" id="prompt">Click the letter to read 💌</div>
+  <div class="top-header" id="topHeader">
+    <h1 class="hbd-title" id="hbdTitle" aria-label="Happy Birthday!"></h1>
+    <div class="prompt" id="prompt">Click the letter to read 💌</div>
+  </div>
 
   <div class="balloons">
     <div class="balloon b1"></div>
@@ -522,6 +559,26 @@
 
   document.getElementById('letterText').innerHTML =
     letterParagraphs.map(p => `<p>${p}</p>`).join('');
+
+  // build "Happy Birthday!" with alternating pink/cream rounded letters
+  (function buildTitle(){
+    const text = "Happy Birthday!";
+    const container = document.getElementById('hbdTitle');
+    let letterIndex = 0;
+    text.split(' ').forEach(word => {
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'hbd-word';
+      word.split('').forEach(ch => {
+        const letterSpan = document.createElement('span');
+        letterSpan.textContent = ch;
+        letterSpan.className = letterIndex % 2 === 0 ? 'c-pink' : 'c-cream';
+        wordSpan.appendChild(letterSpan);
+        letterIndex++;
+      });
+      container.appendChild(wordSpan);
+    });
+    setTimeout(() => container.classList.add('show'), 300);
+  })();
 
   const envelopeWrap = document.getElementById('envelopeWrap');
   const cake = document.getElementById('cake');
