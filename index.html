@@ -27,20 +27,25 @@
     margin:0;
     padding:0;
     height:100%;
+    width:100%;
     overflow-x:hidden;
     background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-bottom) 100%);
     font-family:'Quicksand',sans-serif;
     color:var(--ink);
+    touch-action:pan-y;
   }
 
   body{
     min-height:100vh;
     min-height:100dvh;
+    height:100vh;
+    height:100dvh;
     position:relative;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:flex-end;
+    overflow:hidden;
   }
 
   /* soft glow behind everything */
@@ -133,13 +138,14 @@
   .scene{
     position:relative;
     width:100%;
-    max-width:520px;
-    height:min(72vh, 560px);
+    max-width:560px;
+    height:min(72dvh, 560px);
     display:flex;
     align-items:flex-end;
     justify-content:center;
     z-index:10;
-    padding-bottom:6vh;
+    padding-bottom:5dvh;
+    flex-shrink:0;
   }
 
   .stage{
@@ -360,6 +366,7 @@
     padding:34px 28px 30px;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
     transform:translateY(24px) scale(0.97);
     transition:transform .45s cubic-bezier(.34,1.56,.64,1);
     background-image:
@@ -403,13 +410,50 @@
   }
   .close-btn:active{ transform:scale(0.92); }
 
+  /* small phones (e.g. iPhone SE) */
   @media (max-width:380px){
-    .stage{ width:240px; }
-    .layer-3{ width:180px; }
-    .layer-2{ width:154px; }
-    .layer-1{ width:128px; }
-    .layer-top{ width:100px; }
-    .envelope-wrap{ width:110px; height:76px; }
+    .scene{ height:min(64dvh, 460px); padding-bottom:3dvh; }
+    .stage{ width:230px; height:290px; }
+    .layer-3{ width:172px; }
+    .layer-2{ width:148px; }
+    .layer-1{ width:122px; }
+    .layer-top{ width:96px; }
+    .envelope-wrap{ width:104px; height:72px; }
+    .env-flap{ border-left-width:52px; border-right-width:52px; border-top-width:38px; }
+    .env-seal{ top:30px; width:22px; height:22px; font-size:12px; }
+    .cake{ width:190px; }
+    .plate{ width:198px; }
+  }
+
+  /* short viewports / landscape phones */
+  @media (max-height:520px) and (orientation:landscape){
+    .prompt{ font-size:clamp(18px,4vw,24px); top:8px; }
+    .scene{ height:min(88dvh, 300px); padding-bottom:2dvh; }
+    .stage{ transform:scale(0.72); }
+    .letter-card{ padding:24px 20px 22px; max-height:92dvh; }
+  }
+
+  /* iPad portrait and larger phones in between */
+  @media (min-width:600px) and (max-height:1000px){
+    .scene{ max-width:600px; height:min(60dvh, 560px); }
+    .stage{ width:320px; height:390px; }
+    .layer-3{ width:228px; }
+    .layer-2{ width:196px; }
+    .layer-1{ width:162px; }
+    .layer-top{ width:128px; }
+    .cake{ width:250px; }
+    .plate{ width:262px; }
+    .envelope-wrap{ width:148px; height:102px; }
+    .env-flap{ border-left-width:74px; border-right-width:74px; border-top-width:55px; }
+    .env-seal{ width:30px; height:30px; font-size:16px; top:44px; }
+    .letter-card{ max-width:640px; padding:44px 40px 36px; }
+  }
+
+  /* iPad landscape / wide tablets */
+  @media (min-width:900px){
+    .scene{ max-width:640px; }
+    .prompt{ font-size:clamp(26px, 3.4vw, 40px); }
+    .letter-card{ max-width:680px; }
   }
 </style>
 </head>
