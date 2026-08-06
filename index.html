@@ -1,5 +1,5 @@
-<!DOCTYPE html> 
-<html lang="en"> //for fix delay
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
@@ -152,6 +152,8 @@
     position:relative;
     width:280px;
     height:340px;
+    transform:scale(1.35);
+    transform-origin:center bottom;
   }
 
   /* ---------- envelope (letter) ---------- */
@@ -413,7 +415,7 @@
   /* small phones (e.g. iPhone SE) */
   @media (max-width:380px){
     .scene{ height:min(64dvh, 460px); padding-bottom:3dvh; }
-    .stage{ width:230px; height:290px; }
+    .stage{ width:230px; height:290px; transform:scale(1.3); transform-origin:center bottom; }
     .layer-3{ width:172px; }
     .layer-2{ width:148px; }
     .layer-1{ width:122px; }
@@ -429,14 +431,14 @@
   @media (max-height:520px) and (orientation:landscape){
     .prompt{ font-size:clamp(18px,4vw,24px); top:8px; }
     .scene{ height:min(88dvh, 300px); padding-bottom:2dvh; }
-    .stage{ transform:scale(0.72); }
+    .stage{ transform:scale(0.95); transform-origin:center bottom; }
     .letter-card{ padding:24px 20px 22px; max-height:92dvh; }
   }
 
   /* iPad portrait and larger phones in between */
   @media (min-width:600px) and (max-height:1000px){
     .scene{ max-width:600px; height:min(60dvh, 560px); }
-    .stage{ width:320px; height:390px; }
+    .stage{ width:320px; height:390px; transform:scale(1.3); transform-origin:center bottom; }
     .layer-3{ width:228px; }
     .layer-2{ width:196px; }
     .layer-1{ width:162px; }
