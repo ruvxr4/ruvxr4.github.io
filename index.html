@@ -4,178 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Birthday Cake 🎂</title>
-    <!-- เชื่อมต่อไฟล์ style.css เพื่อดึงแอนิเมชันเค้กมาใช้ -->
+    <!-- เชื่อมต่อไฟล์ style.css -->
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      /* =========================================
-         1. บังคับแก้ไข Layout จาก style.css เดิม
-         ========================================= */
-      * {
-        background-color: transparent !important; /* ลบสีพื้นหลังที่ติดมาจาก style.css เดิม */
-      }
-      body {
-        margin: 0 !important;
-        padding: 0 !important;
-        height: 100vh !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        background-color: #BDE0FE !important; /* พื้นหลังสีฟ้าพาสเทลตามภาพ */
-        position: relative !important;
-        overflow: hidden !important; /* ป้องกันหน้าจอเลื่อนไปมา */
-      }
-      .container {
-        padding-bottom: 0 !important; 
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        text-align: center !important;
-        transform: translateY(-80px); /* ขยับข้อความและเค้กขึ้นด้านบนตามที่ขอ */
-      }
-      .cake-container {
-        padding-right: 0 !important; 
-        margin-top: 60px !important; /* ระยะห่างระหว่างข้อความกับเค้ก */
-        display: flex !important;
-        justify-content: center !important;
-      }
-
-      /* =========================================
-         2. ตกแต่งตัวหนังสือ
-         ========================================= */
-      #mainTitle {
-        font-size: 48px;
-        font-family: 'Pixelify Sans', sans-serif;
-        margin-bottom: 12px;
-        color: #333;
-      }
-      #subTitle {
-        font-size: 20px;
-        font-family: 'Pixelify Sans', sans-serif;
-        color: #555;
-      }
-
-      /* =========================================
-         3. ตกแต่งปุ่มกด click here ด้านขวา
-         ========================================= */
-      .letter-wrapper {
-        position: absolute !important;
-        right: 12% !important; /* ระยะห่างจากขอบขวา */
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        cursor: pointer !important;
-        z-index: 10 !important;
-      }
-      .letter-label {
-        background-color: #ffb3c6 !important;
-        padding: 12px 28px !important;
-        border-radius: 8px !important;
-        font-size: 1.2rem !important;
-        color: #333 !important;
-        font-weight: bold !important;
-        font-family: 'Pixelify Sans', sans-serif;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
-        transition: transform 0.2s !important;
-      }
-      .letter-label:hover {
-        transform: scale(1.05) !important;
-      }
-
-      /* =========================================
-         4. ซ่อนและตกแต่ง Popup หน้าต่างจดหมาย (Modal)
-         ========================================= */
-      .letter-modal-overlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        background-color: rgba(0, 0, 0, 0.6) !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        opacity: 0; /* ซ่อนหน้าต่างไว้ */
-        pointer-events: none;
-        transition: opacity 0.3s ease-in-out;
-        z-index: 1000 !important;
-      }
-      .letter-modal-overlay.active {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-      }
-      .letter-paper {
-        background-color: #fffaf0 !important;
-        width: 80% !important;
-        max-width: 800px !important;
-        height: 60vh !important;
-        display: flex !important;
-        flex-direction: row !important;
-        border-radius: 12px !important;
-        position: relative !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
-        overflow: hidden !important;
-      }
-      .letter-close-btn {
-        position: absolute !important;
-        top: 10px !important;
-        right: 15px !important;
-        font-size: 32px !important;
-        font-weight: bold !important;
-        border: none !important;
-        background: none !important;
-        cursor: pointer !important;
-        color: #888 !important;
-        z-index: 10 !important;
-      }
-      .letter-close-btn:hover {
-        color: #ff4d4d !important;
-      }
-      .letter-paper-left {
-        flex: 1 !important;
-        padding: 40px !important;
-        border-right: 2px dashed #ccc !important;
-        overflow-y: auto !important;
-        display: flex !important;
-        align-items: center !important;
-      }
-      .letter-paper-left p {
-        font-family: sans-serif !important;
-        font-size: 18px !important;
-        line-height: 1.8 !important;
-        color: #444 !important;
-      }
-      .letter-paper-right {
-        flex: 1 !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        padding: 20px !important;
-        background-color: #ffe4e1 !important;
-      }
-      .letter-photo-frame {
-        width: 85% !important;
-        height: 85% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        background: white !important;
-        padding: 12px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
-        border-radius: 8px !important;
-        transform: rotate(2deg) !important;
-      }
-      .letter-photo-frame img {
-        max-width: 100% !important;
-        max-height: 100% !important;
-        object-fit: cover !important;
-        border-radius: 4px !important;
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <!-- โซนตัวหนังสือและเค้ก -->
@@ -197,9 +30,7 @@
     <!-- โซนหน้าต่างจดหมาย (Modal) -->
     <div class="letter-modal-overlay" id="letterModal">
       <div class="letter-paper">
-        <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">
-          &times;
-        </button>
+        <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">&times;</button>
         <div class="letter-paper-left">
           <p>
             สุขสันต์วันเกิดย้อนหลังนะครับ ริต้า ขอให้ริต้าสุขภาพแข็งแรง
@@ -209,24 +40,18 @@
         </div>
         <div class="letter-paper-right">
           <div class="letter-photo-frame" id="letterPhotoFrame">
-             <!-- ตรงนี้เรียกใช้ไฟล์ภาพ ritani.jpg -->
              <img src="ritani.jpg" alt="รูปภาพ" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- สคริปต์การทำงานของไมค์เทียนและปุ่มจดหมาย -->
+    <!-- Script ควบคุมเค้ก, ไมค์ และจดหมาย -->
     <script>
-      // 1. จัดการเทียนและเค้ก
+      // 1. สร้างเทียนและเค้ก
       const candleCount = 4;
       const cake = document.getElementById("cake");
-      const colors = [
-        "green-candle",
-        "purple-candle",
-        "blue-candle",
-        "yellow-candle",
-      ];
+      const colors = ["green-candle", "purple-candle", "blue-candle", "yellow-candle"];
       const CAKE_VISUAL_WIDTH = 35;
 
       function createCandles(count) {
@@ -244,10 +69,7 @@
 
           const row = Math.floor(i / candlesPerRow);
           const col = i % candlesPerRow;
-          const totalCandlesInRow = Math.min(
-            candlesPerRow,
-            count - row * candlesPerRow
-          );
+          const totalCandlesInRow = Math.min(candlesPerRow, count - row * candlesPerRow);
           const rowSpacing = availableWidth / (totalCandlesInRow + 1);
 
           const leftBase = rowSpacing * (col + 1) - CANDLE_VISUAL_WIDTH / 2 + 5;
@@ -260,10 +82,9 @@
           cake.appendChild(candle);
         }
       }
-
       createCandles(candleCount);
 
-      // 2. จัดการหน้าต่างจดหมาย (เปิด/ปิด)
+      // 2. จัดการเปิด/ปิดหน้าต่างจดหมาย
       const letterWrapper = document.getElementById("letterWrapper");
       const letterModal = document.getElementById("letterModal");
       const letterCloseBtn = document.getElementById("letterCloseBtn");
@@ -284,56 +105,41 @@
         if (e.key === "Escape") closeLetter();
       });
 
-      // 3. ระบบเป่าเทียนด้วยไมค์ (ตั้งความไวไว้ที่ 0.3 ให้เป่าง่ายขึ้น)
+      // 3. ระบบเซ็นเซอร์เป่าเทียน
       async function startMicDetection() {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            audio: true,
-          });
-          const audioContext = new (window.AudioContext ||
-            window.webkitAudioContext)();
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
           const source = audioContext.createMediaStreamSource(stream);
           const analyser = audioContext.createAnalyser();
           analyser.fftSize = 512;
-
           source.connect(analyser);
 
           const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
           let blown = false;
 
           function detectBlow() {
             analyser.getByteFrequencyData(dataArray);
-
             let highFreqSum = 0;
             let lowFreqSum = 0;
-
             const midpoint = dataArray.length / 2;
 
             for (let i = 0; i < dataArray.length; i++) {
-              if (i < midpoint) {
-                lowFreqSum += dataArray[i];
-              } else {
-                highFreqSum += dataArray[i];
-              }
+              if (i < midpoint) lowFreqSum += dataArray[i];
+              else highFreqSum += dataArray[i];
             }
 
             const highAvg = highFreqSum / (dataArray.length / 2);
             const lowAvg = lowFreqSum / (dataArray.length / 2);
-
             const ratio = highAvg / (lowAvg + 1);
 
-            // ความไวในการเป่า (ลดจาก 0.5 เป็น 0.3)
-            const BLOW_RATIO_THRESHOLD = 0.3;
-
-            if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
+            // ความไวในการเป่า (0.3 กำลังดี)
+            if (ratio > 0.3 && !blown) {
               blown = true;
               blowOutCandles();
             }
-
             requestAnimationFrame(detectBlow);
           }
-
           detectBlow();
         } catch (err) {
           console.error("Mic access error:", err);
@@ -352,14 +158,7 @@
             });
           }, delay);
         });
-
-        // ข้อความจะเปลี่ยนไปหลังจากเป่าเทียนดับ
-        setTimeout(() => {
-          const subTitle = document.getElementById("subTitle");
-          subTitle.textContent = `Yayy! Wishing you the happiest birthday ever!! 🎉`;
-        }, 1200);
       }
-
       startMicDetection();
     </script>
   </body>
