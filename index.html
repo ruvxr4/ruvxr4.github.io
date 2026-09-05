@@ -12,17 +12,163 @@
       rel="stylesheet"
     />
     <style>
+      /* =========================================
+         1. บังคับทับโค้ดเดิมที่ทำให้เค้กตกขอบ (Force Fix Layout)
+         ========================================= */
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 100vh !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background-color: #BDE0FE !important; /* พื้นหลังสีฟ้าพาสเทล */
+        position: relative !important;
+      }
+      .container {
+        padding-bottom: 0 !important; /* ลบ padding เดิมที่ดันเค้กตกจอ */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+      .cake-container {
+        padding-right: 0 !important; /* ลบ padding เดิมที่ดันเค้กไปซ้าย */
+        margin-top: 40px !important;
+      }
+
+      /* =========================================
+         2. ตกแต่งตัวหนังสือ Happy Birthday
+         ========================================= */
       #mainTitle {
-        font-size: 48px; /* ปรับขนาดตัวหนังสือ Happy Birthday ให้ใหญ่ขึ้น */
+        font-size: 48px;
         font-family: 'Pixelify Sans', sans-serif;
         margin-bottom: 8px;
         color: #333;
       }
-
       #subTitle {
-        font-size: 20px; /* ปรับขนาดข้อความรองให้ใหญ่ขึ้นนิดหน่อยให้สมดุลกัน */
+        font-size: 20px;
         font-family: 'Pixelify Sans', sans-serif;
         color: #555;
+      }
+
+      /* =========================================
+         3. ตกแต่งปุ่มจดหมาย "click here"
+         ========================================= */
+      .letter-wrapper {
+        position: absolute !important;
+        right: 15% !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        cursor: pointer !important;
+        z-index: 10 !important;
+      }
+      .letter-label {
+        background-color: #ffb3c6 !important;
+        padding: 12px 24px !important;
+        border-radius: 8px !important;
+        font-size: 1.2rem !important;
+        color: #333 !important;
+        font-weight: bold !important;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
+        transition: transform 0.2s !important;
+      }
+      .letter-label:hover {
+        transform: scale(1.05) !important;
+      }
+      /* ซ่อนไอคอนลูกศรเดิม (ถ้ายังมีค้างอยู่) */
+      .letter-icon {
+        display: none !important;
+      }
+
+      /* =========================================
+         4. ซ่อนและตกแต่ง Popup หน้าต่างจดหมาย (Modal)
+         ========================================= */
+      .letter-modal-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background-color: rgba(0, 0, 0, 0.6) !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        opacity: 0; /* ซ่อนไว้จนกว่าจะกด */
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
+        z-index: 1000 !important;
+      }
+      .letter-modal-overlay.active {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      .letter-paper {
+        background-color: #fffaf0 !important;
+        width: 80% !important;
+        max-width: 800px !important;
+        height: 60vh !important;
+        display: flex !important;
+        flex-direction: row !important;
+        border-radius: 12px !important;
+        position: relative !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        overflow: hidden !important;
+      }
+      .letter-close-btn {
+        position: absolute !important;
+        top: 10px !important;
+        right: 15px !important;
+        font-size: 32px !important;
+        font-weight: bold !important;
+        border: none !important;
+        background: none !important;
+        cursor: pointer !important;
+        color: #888 !important;
+        z-index: 10 !important;
+      }
+      .letter-close-btn:hover {
+        color: #ff4d4d !important;
+      }
+      .letter-paper-left {
+        flex: 1 !important;
+        padding: 40px !important;
+        border-right: 2px dashed #ccc !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+      .letter-paper-left p {
+        font-family: sans-serif !important;
+        font-size: 18px !important;
+        line-height: 1.8 !important;
+        color: #444 !important;
+      }
+      .letter-paper-right {
+        flex: 1 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 20px !important;
+        background-color: #ffe4e1 !important;
+      }
+      .letter-photo-frame {
+        width: 85% !important;
+        height: 85% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        background: white !important;
+        padding: 12px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 8px !important;
+        transform: rotate(2deg) !important;
+      }
+      .letter-photo-frame img {
+        max-width: 100% !important;
+        max-height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 4px !important;
       }
     </style>
   </head>
@@ -34,12 +180,10 @@
       </div>
     </div>
 
-    <!-- จดหมาย: ปุ่มเปิดจดหมาย -->
     <div class="letter-wrapper" id="letterWrapper">
       <div class="letter-label">click here</div>
     </div>
 
-    <!-- จดหมาย: หน้าต่างกระดาษ A4 แนวนอน พับครึ่ง -->
     <div class="letter-modal-overlay" id="letterModal">
       <div class="letter-paper">
         <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">
@@ -63,7 +207,7 @@
     <script>
       // Read URL params
       const params = new URLSearchParams(window.location.search);
-      const name = params.get("name") || "Kitty"; // เปลี่ยนค่าเริ่มต้นจาก Friend เป็น Kitty
+      const name = params.get("name") || "Kitty"; 
       let candleCount = parseInt(params.get("candles")) || 4;
       candleCount = Math.min(Math.max(candleCount, 1), 30);
 
@@ -178,7 +322,6 @@
 
             const ratio = highAvg / (lowAvg + 1);
 
-            // ปรับตัวเลขตรงนี้ให้เป่าง่ายขึ้น (ลดค่าจาก 0.5 เป็น 0.3)
             const BLOW_RATIO_THRESHOLD = 0.3;
 
             if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
