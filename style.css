@@ -6987,3 +6987,57 @@ body {
     width: 5px;
   }
 }
+
+/* =========================================
+   6. การรองรับหน้าจอมือถือ (Responsive / Phone Friendly)
+   ========================================= */
+@media (max-width: 768px) {
+  /* 1. ปรับขนาดตัวอักษรให้พอดีจอมือถือ */
+  #mainTitle {
+    font-size: 32px;
+  }
+  #subTitle {
+    font-size: 16px;
+    padding: 0 15px;
+  }
+
+  /* 2. ปรับขนาดเค้กและระยะขอบไม่ให้ตกขอบจอ */
+  .cake {
+    transform: scale(4.5); /* ย่อขนาดเค้กลงเกือบครึ่ง */
+  }
+  .container {
+    padding-bottom: 250px;
+    transform: translateY(-40px);
+  }
+  .cake-container {
+    padding-right: 250px;
+  }
+
+  /* 3. ปรับหน้าต่างจดหมายให้เรียง "บน-ล่าง" แทน "ซ้าย-ขวา" */
+  .modal-wrapper {
+    flex-direction: column;
+    height: 85vh; /* ให้ความสูงพอดีกับหน้าจอมือถือ */
+    width: 90%;
+    overflow-y: auto; /* ทำให้เอานิ้วเลื่อนดูเนื้อหาได้ */
+  }
+  .modal-left {
+    border-right: none;
+    border-bottom: 2px dashed #bbb; /* ย้ายรอยประมาไว้ด้านล่างข้อความ */
+    padding: 30px 20px;
+  }
+  .modal-right {
+    padding: 30px 20px;
+  }
+  .photo-frame img {
+    width: 180px;
+    height: 230px;
+  }
+
+  /* 4. ปรับปุ่ม Click here ให้เล็กลงและไม่ชิดมุมขอบจนเกินไป */
+  .click-here-btn {
+    bottom: 25px;
+    right: 20px;
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
