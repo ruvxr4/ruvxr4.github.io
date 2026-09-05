@@ -9,7 +9,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #3EB489;
+  background-color: #BDE0FE;
   position: relative; /* สำคัญมาก เพื่อให้จดหมายอิงตำแหน่งอยู่ขวาขอบจอ */
 }
 
