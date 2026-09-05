@@ -4,222 +4,85 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Birthday Cake 🎂</title>
-    <!-- ลิงก์ไปยังไฟล์ CSS ที่คุณส่งมา (อย่าลืมตั้งชื่อไฟล์ให้ตรงกันนะครับ ในที่นี้คือ style_2.css) -->
-    <link rel="stylesheet" href="style_2.css" />
+    <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      /* เพิ่มโค้ดจดหมายและจัด Layout เพิ่มเติมที่นี่ (ไม่กวนเค้กแน่นอน) */
-      body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #BDE0FE; /* พื้นหลังสีฟ้า */
-        position: relative;
-        overflow: hidden;
-      }
-
-      .container {
-        padding-bottom: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        transform: translateY(-80px); /* ขยับข้อความและเค้กขึ้นด้านบน */
-      }
-
-      .cake-container {
-        padding-right: 0; /* แก้ไข padding เดิมใน style_2.css ที่ทำให้เค้กเบี้ยว */
-        margin-top: 60px; /* เพิ่มระยะห่างระหว่างตัวหนังสือกับเค้ก */
-        display: flex;
-        justify-content: center;
-      }
-
       #mainTitle {
-        font-size: 48px;
+        font-size: 32px;
         font-family: 'Pixelify Sans', sans-serif;
-        margin-bottom: 12px;
-        color: #333;
+        margin-bottom: 8px;
       }
 
       #subTitle {
-        font-size: 20px;
+        font-size: 18px;
         font-family: 'Pixelify Sans', sans-serif;
         color: #555;
-      }
-
-      /* --- ปุ่มจดหมาย --- */
-      .letter-wrapper {
-        position: absolute;
-        right: 12%;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        z-index: 10;
-      }
-
-      .letter-label {
-        background-color: #ffb3c6;
-        padding: 12px 28px;
-        border-radius: 8px;
-        font-size: 1.2rem;
-        color: #333;
-        font-weight: bold;
-        font-family: 'Pixelify Sans', sans-serif;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-        transition: transform 0.2s ease-in-out;
-      }
-
-      .letter-label:hover {
-        transform: scale(1.05);
-      }
-
-      /* --- หน้าต่างจดหมาย (Modal) --- */
-      .letter-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.6);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease-in-out;
-        z-index: 1000;
-      }
-
-      .letter-modal-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .letter-paper {
-        background-color: #fffaf0;
-        width: 80%;
-        max-width: 800px;
-        height: 60vh;
-        display: flex;
-        flex-direction: row;
-        border-radius: 12px;
-        position: relative;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-      }
-
-      .letter-close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 32px;
-        font-weight: bold;
-        border: none;
-        background: none;
-        cursor: pointer;
-        color: #888;
-        z-index: 10;
-        transition: color 0.2s;
-      }
-
-      .letter-close-btn:hover {
-        color: #ff4d4d;
-      }
-
-      .letter-paper-left {
-        flex: 1;
-        padding: 40px;
-        border-right: 2px dashed #ccc;
-        overflow-y: auto;
-        display: flex;
-        align-items: center;
-      }
-
-      .letter-paper-left p {
-        font-family: sans-serif;
-        font-size: 18px;
-        line-height: 1.8;
-        color: #444;
-      }
-
-      .letter-paper-right {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
-        background-color: #ffe4e1;
-      }
-
-      .letter-photo-frame {
-        width: 85%;
-        height: 85%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: white;
-        padding: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-        border-radius: 8px;
-        transform: rotate(2deg);
-      }
-
-      .letter-photo-frame img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: cover;
-        border-radius: 4px;
       }
     </style>
   </head>
   <body>
-    <!-- โซนตัวหนังสือและเค้ก -->
     <div class="container">
-      <div id="birthdayText">
-        <div id="mainTitle">Happy Birthday, Kitty!</div>
-        <div id="subTitle">Make a wish, blow out the candle then click for read.</div>
-      </div>
+      <div id="birthdayText"></div>
       <div class="cake-container">
-        <!-- นี่คือจุดที่ทำให้เค้กจาก style_2.css ปรากฏขึ้นมาครับ -->
         <div class="cake" id="cake"></div>
       </div>
     </div>
 
-    <!-- โซนปุ่มเปิดจดหมาย -->
-    <div class="letter-wrapper" id="letterWrapper">
-      <div class="letter-label">click here</div>
-    </div>
+    <!-- ปุ่ม click here สีชมพู มุมขวาล่าง -->
+    <button class="click-here-btn" onclick="openLetter()">click here</button>
 
-    <!-- โซนหน้าต่างจดหมาย (Modal) -->
-    <div class="letter-modal-overlay" id="letterModal">
-      <div class="letter-paper">
-        <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">&times;</button>
-        <div class="letter-paper-left">
+    <!-- หน้าต่างจดหมาย (Modal) -->
+    <div id="letterModal" class="modal">
+      <div class="modal-wrapper">
+        <span class="close-btn" onclick="closeLetter()">&times;</span>
+        
+        <!-- ฝั่งซ้าย: ข้อความ -->
+        <div class="modal-left">
           <p>
-            สุขสันต์วันเกิดย้อนหลังนะครับ ริต้า ขอให้ริต้าสุขภาพแข็งแรง
-            มีตังเยอะๆๆๆๆ ยิ้มสวยๆทุกวัน มีความสุขมากๆๆๆเลยยย
-            ริวดีใจมากๆเลยครับที่ได้รู้จักริต้าริวไม่ขอไรมากแค่ขอให้ริต้ายิ้มสวยๆในทุกวันไม่มีเรื่องให้ทุกข์ใจก็พอแล้วครับมีอะไรก็บอกริวได้ริวจะคอยรับฟังอยู่ตรงนี้เสมอๆครับ
+            สุขสันต์วันเกิดย้อนหลังนะครับ ริต้า ขอให้ริต้า<br>
+            สุขภาพแข็งแรง มีตังเยอะๆๆๆๆ ยิ้มสวยๆทุกวัน<br>
+            มีความสุขมากๆๆๆเลยยย ริวดีใจมากๆเลยครับที่<br>
+            ได้รู้จักริต้าริวไม่ขอไรมากแค่ขอให้ริต้ายิ้มสวยๆ<br>
+            ในทุกวันไม่มีเรื่องให้ทุกข์ใจก็พอแล้วครับมี<br>
+            อะไรก็บอกริวได้ริวจะคอยรับฟังอยู่ตรงนี้เสมอๆ<br>
+            ครับ
           </p>
         </div>
-        <div class="letter-paper-right">
-          <div class="letter-photo-frame" id="letterPhotoFrame">
-             <img src="ritani.jpg" alt="รูปภาพ" />
+
+        <!-- ฝั่งขวา: รูปภาพ -->
+        <div class="modal-right">
+          <div class="photo-frame">
+            <!-- ⚠️ เปลี่ยนชื่อไฟล์รูปภาพของคุณตรง src ด้านล่างนี้ -->
+            <img src="ใส่ชื่อไฟล์รูปภาพของคุณตรงนี้.jpg" alt="Rita's Photo">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Script สร้างเทียน, ไมค์ และจดหมาย -->
     <script>
-      // 1. สร้างเทียนและสุ่มสี
-      const candleCount = 4;
+      // ตั้งค่าจำนวนเทียน
+      const candleCount = 5; // ปรับให้ตรงตามรูปเค้กของคุณ
+
+      const birthdayText = document.getElementById("birthdayText");
+      // แก้ไขข้อความให้ตรงกับภาพที่แนบ
+      birthdayText.innerHTML = `
+        <div id="mainTitle">Happy Birthday, Kitty!</div>
+        <div id="subTitle">Make a wish, blow out the candle then click for read.</div>
+      `;
+
       const cake = document.getElementById("cake");
-      const colors = ["green-candle", "purple-candle", "blue-candle", "yellow-candle"];
+
+      const colors = [
+        "green-candle",
+        "purple-candle",
+        "blue-candle",
+        "yellow-candle",
+      ];
       const CAKE_VISUAL_WIDTH = 35;
 
       function createCandles(count) {
@@ -227,6 +90,7 @@
         const CANDLE_VISUAL_WIDTH = 2;
         const availableWidth = CAKE_VISUAL_WIDTH;
         const candlesPerRow = 6;
+        const rowCount = Math.ceil(count / candlesPerRow);
         const shiftAmount = 4;
 
         for (let i = 0; i < count; i++) {
@@ -237,7 +101,10 @@
 
           const row = Math.floor(i / candlesPerRow);
           const col = i % candlesPerRow;
-          const totalCandlesInRow = Math.min(candlesPerRow, count - row * candlesPerRow);
+          const totalCandlesInRow = Math.min(
+            candlesPerRow,
+            count - row * candlesPerRow
+          );
           const rowSpacing = availableWidth / (totalCandlesInRow + 1);
 
           const leftBase = rowSpacing * (col + 1) - CANDLE_VISUAL_WIDTH / 2 + 5;
@@ -250,42 +117,58 @@
           cake.appendChild(candle);
         }
       }
+
       createCandles(candleCount);
 
-      // 2. ระบบเซ็นเซอร์เป่าเทียน (ความไว 0.3)
+      // === Microphone / Blow Detection ===
       async function startMicDetection() {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+          });
+          const audioContext = new (window.AudioContext ||
+            window.webkitAudioContext)();
           const source = audioContext.createMediaStreamSource(stream);
           const analyser = audioContext.createAnalyser();
           analyser.fftSize = 512;
+
           source.connect(analyser);
 
           const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
           let blown = false;
 
           function detectBlow() {
             analyser.getByteFrequencyData(dataArray);
+
             let highFreqSum = 0;
             let lowFreqSum = 0;
+
             const midpoint = dataArray.length / 2;
 
             for (let i = 0; i < dataArray.length; i++) {
-              if (i < midpoint) lowFreqSum += dataArray[i];
-              else highFreqSum += dataArray[i];
+              if (i < midpoint) {
+                lowFreqSum += dataArray[i];
+              } else {
+                highFreqSum += dataArray[i];
+              }
             }
 
             const highAvg = highFreqSum / (dataArray.length / 2);
             const lowAvg = lowFreqSum / (dataArray.length / 2);
+
             const ratio = highAvg / (lowAvg + 1);
 
-            if (ratio > 0.3 && !blown) {
+            const BLOW_RATIO_THRESHOLD = 0.5;
+
+            if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
               blown = true;
               blowOutCandles();
             }
+
             requestAnimationFrame(detectBlow);
           }
+
           detectBlow();
         } catch (err) {
           console.error("Mic access error:", err);
@@ -304,29 +187,23 @@
             });
           }, delay);
         });
+
+        setTimeout(() => {
+          const subTitle = document.getElementById("subTitle");
+          subTitle.textContent = `Yayy! Now click the pink button to read! 🎉`;
+        }, 1200);
       }
+
       startMicDetection();
 
-      // 3. จัดการการเปิด-ปิดจดหมาย
-      const letterWrapper = document.getElementById("letterWrapper");
-      const letterModal = document.getElementById("letterModal");
-      const letterCloseBtn = document.getElementById("letterCloseBtn");
-
+      // ฟังก์ชันเปิด/ปิด หน้าต่างจดหมาย
       function openLetter() {
-        letterModal.classList.add("active");
-      }
-      function closeLetter() {
-        letterModal.classList.remove("active");
+        document.getElementById("letterModal").style.display = "flex";
       }
 
-      letterWrapper.addEventListener("click", openLetter);
-      letterCloseBtn.addEventListener("click", closeLetter);
-      letterModal.addEventListener("click", (e) => {
-        if (e.target === letterModal) closeLetter();
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeLetter();
-      });
+      function closeLetter() {
+        document.getElementById("letterModal").style.display = "none";
+      }
     </script>
   </body>
 </html>
