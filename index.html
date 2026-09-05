@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Birthday Cake 🎂</title>
+    <!-- เชื่อมต่อไฟล์ style.css เพื่อดึงแอนิเมชันเค้กมาใช้ -->
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,8 +14,11 @@
     />
     <style>
       /* =========================================
-         1. บังคับทับโค้ดเดิมที่ทำให้เค้กตกขอบ (Force Fix Layout)
+         1. บังคับแก้ไข Layout จาก style.css เดิม
          ========================================= */
+      * {
+        background-color: transparent !important; /* ลบสีพื้นหลังที่ติดมาจาก style.css เดิม */
+      }
       body {
         margin: 0 !important;
         padding: 0 !important;
@@ -22,28 +26,32 @@
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        background-color: #BDE0FE !important; /* พื้นหลังสีฟ้าพาสเทล */
+        background-color: #BDE0FE !important; /* พื้นหลังสีฟ้าพาสเทลตามภาพ */
         position: relative !important;
+        overflow: hidden !important; /* ป้องกันหน้าจอเลื่อนไปมา */
       }
       .container {
-        padding-bottom: 0 !important; /* ลบ padding เดิมที่ดันเค้กตกจอ */
+        padding-bottom: 0 !important; 
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         text-align: center !important;
+        transform: translateY(-80px); /* ขยับข้อความและเค้กขึ้นด้านบนตามที่ขอ */
       }
       .cake-container {
-        padding-right: 0 !important; /* ลบ padding เดิมที่ดันเค้กไปซ้าย */
-        margin-top: 40px !important;
+        padding-right: 0 !important; 
+        margin-top: 60px !important; /* ระยะห่างระหว่างข้อความกับเค้ก */
+        display: flex !important;
+        justify-content: center !important;
       }
 
       /* =========================================
-         2. ตกแต่งตัวหนังสือ Happy Birthday
+         2. ตกแต่งตัวหนังสือ
          ========================================= */
       #mainTitle {
         font-size: 48px;
         font-family: 'Pixelify Sans', sans-serif;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
         color: #333;
       }
       #subTitle {
@@ -53,11 +61,11 @@
       }
 
       /* =========================================
-         3. ตกแต่งปุ่มจดหมาย "click here"
+         3. ตกแต่งปุ่มกด click here ด้านขวา
          ========================================= */
       .letter-wrapper {
         position: absolute !important;
-        right: 15% !important;
+        right: 12% !important; /* ระยะห่างจากขอบขวา */
         top: 50% !important;
         transform: translateY(-50%) !important;
         cursor: pointer !important;
@@ -65,20 +73,17 @@
       }
       .letter-label {
         background-color: #ffb3c6 !important;
-        padding: 12px 24px !important;
+        padding: 12px 28px !important;
         border-radius: 8px !important;
         font-size: 1.2rem !important;
         color: #333 !important;
         font-weight: bold !important;
+        font-family: 'Pixelify Sans', sans-serif;
         box-shadow: 0 4px 6px rgba(0,0,0,0.15) !important;
         transition: transform 0.2s !important;
       }
       .letter-label:hover {
         transform: scale(1.05) !important;
-      }
-      /* ซ่อนไอคอนลูกศรเดิม (ถ้ายังมีค้างอยู่) */
-      .letter-icon {
-        display: none !important;
       }
 
       /* =========================================
@@ -94,7 +99,7 @@
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        opacity: 0; /* ซ่อนไว้จนกว่าจะกด */
+        opacity: 0; /* ซ่อนหน้าต่างไว้ */
         pointer-events: none;
         transition: opacity 0.3s ease-in-out;
         z-index: 1000 !important;
@@ -173,17 +178,23 @@
     </style>
   </head>
   <body>
+    <!-- โซนตัวหนังสือและเค้ก -->
     <div class="container">
-      <div id="birthdayText"></div>
+      <div id="birthdayText">
+        <div id="mainTitle">Happy Birthday, Kitty!</div>
+        <div id="subTitle">Make a wish, blow out the candle then click for read.</div>
+      </div>
       <div class="cake-container">
         <div class="cake" id="cake"></div>
       </div>
     </div>
 
+    <!-- โซนปุ่มเปิดจดหมาย -->
     <div class="letter-wrapper" id="letterWrapper">
       <div class="letter-label">click here</div>
     </div>
 
+    <!-- โซนหน้าต่างจดหมาย (Modal) -->
     <div class="letter-modal-overlay" id="letterModal">
       <div class="letter-paper">
         <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">
@@ -198,27 +209,18 @@
         </div>
         <div class="letter-paper-right">
           <div class="letter-photo-frame" id="letterPhotoFrame">
+             <!-- ตรงนี้เรียกใช้ไฟล์ภาพ ritani.jpg -->
              <img src="ritani.jpg" alt="รูปภาพ" />
           </div>
         </div>
       </div>
     </div>
 
+    <!-- สคริปต์การทำงานของไมค์เทียนและปุ่มจดหมาย -->
     <script>
-      // Read URL params
-      const params = new URLSearchParams(window.location.search);
-      const name = params.get("name") || "Kitty"; 
-      let candleCount = parseInt(params.get("candles")) || 4;
-      candleCount = Math.min(Math.max(candleCount, 1), 30);
-
-      const birthdayText = document.getElementById("birthdayText");
-      birthdayText.innerHTML = `
-        <div id="mainTitle">Happy Birthday, ${name}!</div>
-        <div id="subTitle">กดอ่านจดหมายด้วยนะ 💌</div>
-      `;
-
+      // 1. จัดการเทียนและเค้ก
+      const candleCount = 4;
       const cake = document.getElementById("cake");
-
       const colors = [
         "green-candle",
         "purple-candle",
@@ -232,7 +234,6 @@
         const CANDLE_VISUAL_WIDTH = 2;
         const availableWidth = CAKE_VISUAL_WIDTH;
         const candlesPerRow = 6;
-        const rowCount = Math.ceil(count / candlesPerRow);
         const shiftAmount = 4;
 
         for (let i = 0; i < count; i++) {
@@ -262,7 +263,7 @@
 
       createCandles(candleCount);
 
-      // === Letter (จดหมาย) open / close ===
+      // 2. จัดการหน้าต่างจดหมาย (เปิด/ปิด)
       const letterWrapper = document.getElementById("letterWrapper");
       const letterModal = document.getElementById("letterModal");
       const letterCloseBtn = document.getElementById("letterCloseBtn");
@@ -283,7 +284,7 @@
         if (e.key === "Escape") closeLetter();
       });
 
-      // === Microphone / Blow Detection ===
+      // 3. ระบบเป่าเทียนด้วยไมค์ (ตั้งความไวไว้ที่ 0.3 ให้เป่าง่ายขึ้น)
       async function startMicDetection() {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
@@ -322,6 +323,7 @@
 
             const ratio = highAvg / (lowAvg + 1);
 
+            // ความไวในการเป่า (ลดจาก 0.5 เป็น 0.3)
             const BLOW_RATIO_THRESHOLD = 0.3;
 
             if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
@@ -351,7 +353,7 @@
           }, delay);
         });
 
-        // Update subTitle after short delay
+        // ข้อความจะเปลี่ยนไปหลังจากเป่าเทียนดับ
         setTimeout(() => {
           const subTitle = document.getElementById("subTitle");
           subTitle.textContent = `Yayy! Wishing you the happiest birthday ever!! 🎉`;
