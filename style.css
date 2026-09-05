@@ -6874,57 +6874,114 @@ body {
   background-color: #87CEEB;
 }
 
-.scene {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
+/* -------------------------------------------------------
+   Tunable positioning variables.
+   --cake-scale / --cake-pad control the cake's size and
+   its original left-nudge hack (unchanged from the
+   original file at desktop size: scale 8.5 / pad 500px,
+   so the cake sits centered exactly like before).
+
+   --letter-top / --letter-left position the letter next
+   to the cake. They are measured from the cake's own
+   anchor point, so they stay correct at any window width.
+   If the envelope looks a little off next to the cake on
+   your screen, just nudge these two numbers up/down/left/
+   right until it lines up the way you like.
+   ------------------------------------------------------- */
+:root {
+  --cake-scale: 8.5;
+  --cake-pad: 500px;
+  --letter-top: 300px;
+  --letter-left: 400px;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --cake-scale: 6;
+    --cake-pad: 350px;
+    --letter-top: 210px;
+    --letter-left: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cake-scale: 4;
+    --cake-pad: 235px;
+    --letter-top: 140px;
+    --letter-left: 185px;
+  }
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+.container {
+  padding-bottom: 120px;
   width: 100%;
 }
 
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.cake {
+  transform: scale(var(--cake-scale));
+}
+
 .cake-container {
-  padding-right: 200px;
+  position: relative;
+  padding-right: var(--cake-pad);
 }
 
 /* ---------- letter teaser prop ---------- */
 
 .letter-wrapper {
+  position: absolute;
+  top: var(--letter-top);
+  left: var(--letter-left);
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   user-select: none;
+  z-index: 5;
 }
 
 .letter-hint {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-  font-size: 16px;
-  color: #4a4a4a;
+  gap: 4px;
+  margin-bottom: 2px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #3a3a3a;
+  white-space: nowrap;
 }
 
-.letter-hint .arrow {
-  font-size: 20px;
-  display: inline-block;
-  animation: nudgeArrow 1s ease-in-out infinite;
+.letter-hint .curved-arrow {
+  animation: nudgeArrow 1.1s ease-in-out infinite;
+  transform-origin: 20% 20%;
 }
 
 @keyframes nudgeArrow {
   0%, 100% {
-    transform: translateX(0);
+    transform: translate(0, 0) rotate(0deg);
   }
   50% {
-    transform: translateX(8px);
+    transform: translate(4px, 5px) rotate(4deg);
   }
 }
 
 .envelope {
   position: relative;
-  width: 90px;
-  height: 62px;
+  width: 100px;
+  height: 68px;
   background: #ffd6e8;
   border: 3px solid #c77a9e;
   border-radius: 4px;
@@ -6943,9 +7000,9 @@ body {
   left: 0;
   width: 0;
   height: 0;
-  border-left: 45px solid transparent;
-  border-right: 45px solid transparent;
-  border-top: 34px solid #f3b6d3;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-top: 37px solid #f3b6d3;
 }
 
 .envelope::after {
@@ -6954,7 +7011,26 @@ body {
   bottom: 4px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 20px;
+  font-size: 22px;
+}
+
+@media (max-width: 480px) {
+  .letter-hint {
+    font-size: 16px;
+  }
+  .letter-hint .curved-arrow {
+    width: 40px;
+    height: 40px;
+  }
+  .envelope {
+    width: 72px;
+    height: 50px;
+  }
+  .envelope::before {
+    border-left-width: 36px;
+    border-right-width: 36px;
+    border-top-width: 27px;
+  }
 }
 
 /* ---------- modal / opened letter ---------- */
@@ -6970,6 +7046,8 @@ body {
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 100;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .modal-overlay.active {
@@ -6980,10 +7058,10 @@ body {
 .a4-paper {
   position: relative;
   display: flex;
-  width: min(860px, 92vw);
+  width: min(920px, 94vw);
   aspect-ratio: 297 / 210;
   background: #ffdcea;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   perspective: 1600px;
@@ -7011,7 +7089,7 @@ body {
 .paper-right {
   flex: 1;
   box-sizing: border-box;
-  padding: 5% 6%;
+  padding: 6% 7%;
   background: #ffdcea;
   color: #222;
   font-family: "Pixelify Sans", sans-serif;
@@ -7020,6 +7098,7 @@ body {
 .paper-left {
   display: flex;
   align-items: center;
+  justify-content: center;
   transform-origin: right center;
 }
 
@@ -7049,17 +7128,19 @@ body {
 }
 
 .letter-message {
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: clamp(17px, 2.1vw, 26px);
+  line-height: 1.9;
+  letter-spacing: 0.2px;
   color: #222;
   white-space: pre-line;
+  text-align: left;
 }
 
 .paper-right img {
   max-width: 100%;
   max-height: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 4px solid #ffffffaa;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
@@ -7078,14 +7159,43 @@ body {
   font-family: "Pixelify Sans", sans-serif;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  z-index: 5;
 }
 
 @media (max-width: 700px) {
-  .scene {
+  .a4-paper {
     flex-direction: column;
-    gap: 60px;
+    aspect-ratio: auto;
+    width: min(500px, 94vw);
+    max-height: 88vh;
+    overflow-y: auto;
   }
-  .cake-container {
-    padding-right: 0;
+  .a4-paper::after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    transform: translateY(-50%);
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.12),
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0) 55%,
+      rgba(0, 0, 0, 0.12)
+    );
+  }
+  .paper-left, .paper-right {
+    transform-origin: center top;
+  }
+  .modal-overlay.active .paper-left,
+  .modal-overlay.active .paper-right {
+    animation: none;
+  }
+  .paper-right img {
+    max-height: 46vh;
+  }
+  .modal-close {
+    top: 10px;
+    right: 10px;
   }
 }
