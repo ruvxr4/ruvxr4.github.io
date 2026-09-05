@@ -1,68 +1,106 @@
-* {
-    font-family: "Pixelify Sans", sans-serif;
-}
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Pixelify Sans', sans-serif;
+/* =========================================
+   ส่วนของ Popup หน้าต่างจดหมาย (Letter Modal)
+   ========================================= */
+
+/* 1. ตั้งค่า Overlay พื้นหลังดำโปร่งแสง และซ่อนไว้ก่อน */
+.letter-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* สีดำโปร่งแสง */
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #BDE0FE;
-  position: relative; /* สำคัญมาก เพื่อให้จดหมายอิงตำแหน่งอยู่ขวาขอบจอ */
+  opacity: 0; /* ซ่อนไว้ */
+  pointer-events: none; /* ไม่ให้กดโดนถ้ายังไม่เปิด */
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1000; /* ให้อยู่หน้าสุด */
 }
 
-#birthdayText {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  color: #333;
+/* คลาสนี้จะถูกเพิ่มด้วย JavaScript เวลากดปุ่ม click here */
+.letter-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.container {
+/* 2. ตั้งค่าตัวกระดาษจดหมาย A4 พับครึ่ง */
+.letter-paper {
+  background-color: #fffaf0; /* สีขาวครีมมี่นวลๆ */
+  width: 80%;
+  max-width: 800px;
+  height: 60vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.cake-container {
-  margin-top: 40px; /* เพิ่มระยะห่างตัวหนังสือกับเค้ก */
-}
-
-/* --- เพิ่ม CSS จัดตำแหน่งและตกแต่งปุ่มจดหมาย --- */
-.letter-wrapper {
-  position: absolute;
-  right: 15%; /* ควบคุมระยะห่างจากขอบจอด้านขวา (ยิ่งเปอร์เซ็นต์น้อย ยิ่งชิดขอบ) */
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.letter-label {
-  background-color: #ffb3c6; /* สีพื้นหลังปุ่ม */
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-  transition: transform 0.2s ease-in-out;
-}
-
-.letter-label:hover {
-  transform: scale(1.05); /* เวลานำเมาส์ไปชี้ปุ่มจะขยายขึ้นนิดนึง */
-}
-
-.cake {
+  flex-direction: row;
+  border-radius: 12px;
   position: relative;
-  animation: cake 1s infinite;
-  -webkit-animation: cake 1s infinite;
-  -moz-animation: cake 1s infinite;
-  -o-animation: cake 1s infinite;
-  transform: scale(8.5);
-  z-index: 1; 
-  overflow: visible; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
-/* ---- ด้านล่างนี้คือโค้ด @keyframes cake { ... } เดิมของคุณยาวๆ ปล่อยไว้เหมือนเดิมครับ ---- */
+/* ปุ่มกากบาท (ปิดจดหมาย) */
+.letter-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 32px;
+  font-weight: bold;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #888;
+  z-index: 10;
+  transition: color 0.2s;
+}
+
+.letter-close-btn:hover {
+  color: #ff4d4d; /* ชี้กากบาทแล้วเป็นสีแดง */
+}
+
+/* ฝั่งซ้าย: เนื้อหาจดหมาย */
+.letter-paper-left {
+  flex: 1;
+  padding: 40px;
+  border-right: 2px dashed #ccc; /* เส้นประตรงกลางเหมือนรอยพับ */
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+}
+
+.letter-paper-left p {
+  font-family: sans-serif; /* ฟอนต์อ่านง่ายๆ สำหรับภาษาไทย */
+  font-size: 18px;
+  line-height: 1.8;
+  color: #444;
+}
+
+/* ฝั่งขวา: กรอบรูปภาพ */
+.letter-paper-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #ffe4e1; /* พื้นหลังสีชมพูอ่อนๆ น่ารักๆ ฝั่งรูป */
+}
+
+.letter-photo-frame {
+  width: 85%;
+  height: 85%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  padding: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  transform: rotate(2deg); /* หมุนรูปภาพเอียงนิดๆ ให้ดูมีกิมมิค */
+}
+
+.letter-photo-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
