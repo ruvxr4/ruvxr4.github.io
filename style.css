@@ -1,33 +1,108 @@
 /* =========================================
-   ส่วนของ Popup หน้าต่างจดหมาย (Letter Modal)
+   1. การตั้งค่าหน้าจอหลัก (Layout)
    ========================================= */
+* {
+  font-family: "Pixelify Sans", sans-serif;
+  /* ลบ background-color ออกจาก * เพื่อไม่ให้สีทะลุไปติดรูปหรือปุ่ม */
+}
 
-/* 1. ตั้งค่า Overlay พื้นหลังดำโปร่งแสง และซ่อนไว้ก่อน */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Pixelify Sans', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #BDE0FE; /* พื้นหลังสีฟ้าพาสเทล */
+  position: relative;
+  overflow: hidden; /* ป้องกันไม่ให้หน้าเว็บเลื่อนขึ้นลงได้ */
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform: translateY(-80px); /* ขยับข้อความและเค้กขึ้นด้านบนตามที่สั่ง */
+}
+
+/* =========================================
+   2. ตัวหนังสือ (Typography)
+   ========================================= */
+#mainTitle {
+  font-size: 48px;
+  font-family: 'Pixelify Sans', sans-serif;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+#subTitle {
+  font-size: 20px;
+  font-family: 'Pixelify Sans', sans-serif;
+  color: #555;
+}
+
+.cake-container {
+  margin-top: 60px; /* สร้างระยะห่างระหว่างตัวหนังสือกับเค้ก */
+  display: flex;
+  justify-content: center;
+}
+
+/* =========================================
+   3. ปุ่ม Click here ด้านขวา
+   ========================================= */
+.letter-wrapper {
+  position: absolute;
+  right: 12%; /* บังคับให้อยู่ด้านขวาจอ */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 10;
+}
+
+.letter-label {
+  background-color: #ffb3c6;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: bold;
+  font-family: 'Pixelify Sans', sans-serif;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.letter-label:hover {
+  transform: scale(1.05); /* เอฟเฟกต์ขยายเมื่อเอาเมาส์ชี้ */
+}
+
+/* =========================================
+   4. หน้าต่างจดหมาย (Letter Modal)
+   ========================================= */
 .letter-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* สีดำโปร่งแสง */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0; /* ซ่อนไว้ */
-  pointer-events: none; /* ไม่ให้กดโดนถ้ายังไม่เปิด */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease-in-out;
-  z-index: 1000; /* ให้อยู่หน้าสุด */
+  z-index: 1000;
 }
 
-/* คลาสนี้จะถูกเพิ่มด้วย JavaScript เวลากดปุ่ม click here */
 .letter-modal-overlay.active {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* 2. ตั้งค่าตัวกระดาษจดหมาย A4 พับครึ่ง */
 .letter-paper {
-  background-color: #fffaf0; /* สีขาวครีมมี่นวลๆ */
+  background-color: #fffaf0;
   width: 80%;
   max-width: 800px;
   height: 60vh;
@@ -39,7 +114,6 @@
   overflow: hidden;
 }
 
-/* ปุ่มกากบาท (ปิดจดหมาย) */
 .letter-close-btn {
   position: absolute;
   top: 10px;
@@ -55,34 +129,32 @@
 }
 
 .letter-close-btn:hover {
-  color: #ff4d4d; /* ชี้กากบาทแล้วเป็นสีแดง */
+  color: #ff4d4d;
 }
 
-/* ฝั่งซ้าย: เนื้อหาจดหมาย */
 .letter-paper-left {
   flex: 1;
   padding: 40px;
-  border-right: 2px dashed #ccc; /* เส้นประตรงกลางเหมือนรอยพับ */
+  border-right: 2px dashed #ccc;
   overflow-y: auto;
   display: flex;
   align-items: center;
 }
 
 .letter-paper-left p {
-  font-family: sans-serif; /* ฟอนต์อ่านง่ายๆ สำหรับภาษาไทย */
+  font-family: sans-serif;
   font-size: 18px;
   line-height: 1.8;
   color: #444;
 }
 
-/* ฝั่งขวา: กรอบรูปภาพ */
 .letter-paper-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  background-color: #ffe4e1; /* พื้นหลังสีชมพูอ่อนๆ น่ารักๆ ฝั่งรูป */
+  background-color: #ffe4e1;
 }
 
 .letter-photo-frame {
@@ -95,7 +167,7 @@
   padding: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
-  transform: rotate(2deg); /* หมุนรูปภาพเอียงนิดๆ ให้ดูมีกิมมิค */
+  transform: rotate(2deg);
 }
 
 .letter-photo-frame img {
@@ -104,3 +176,19 @@
   object-fit: cover;
   border-radius: 4px;
 }
+
+/* =========================================
+   5. เค้กและเทียน (Cake Animation) 
+   ========================================= */
+.cake {
+  position: relative;
+  animation: cake 1s infinite;
+  -webkit-animation: cake 1s infinite;
+  -moz-animation: cake 1s infinite;
+  -o-animation: cake 1s infinite;
+  transform: scale(8.5);
+  z-index: 1;
+  overflow: visible;
+}
+
+/* 👇 ปล่อยโค้ด @keyframes cake { ... } และโค้ดเทียนดั้งเดิมของคุณไว้ด้านล่างนี้เลยครับ 👇 */
