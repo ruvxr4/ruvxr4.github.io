@@ -47,135 +47,7 @@ body {
 }
 
 /* =========================================
-   3. ปุ่ม Click here ด้านขวา
-   ========================================= */
-.letter-wrapper {
-  position: absolute;
-  right: 12%; /* บังคับให้อยู่ด้านขวาจอ */
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 10;
-}
-
-.letter-label {
-  background-color: #ffb3c6;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: bold;
-  font-family: 'Pixelify Sans', sans-serif;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.15);
-  transition: transform 0.2s ease-in-out;
-}
-
-.letter-label:hover {
-  transform: scale(1.05); /* เอฟเฟกต์ขยายเมื่อเอาเมาส์ชี้ */
-}
-
-/* =========================================
-   4. หน้าต่างจดหมาย (Letter Modal)
-   ========================================= */
-.letter-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease-in-out;
-  z-index: 1000;
-}
-
-.letter-modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.letter-paper {
-  background-color: #fffaf0;
-  width: 80%;
-  max-width: 800px;
-  height: 60vh;
-  display: flex;
-  flex-direction: row;
-  border-radius: 12px;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-}
-
-.letter-close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 32px;
-  font-weight: bold;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: #888;
-  z-index: 10;
-  transition: color 0.2s;
-}
-
-.letter-close-btn:hover {
-  color: #ff4d4d;
-}
-
-.letter-paper-left {
-  flex: 1;
-  padding: 40px;
-  border-right: 2px dashed #ccc;
-  overflow-y: auto;
-  display: flex;
-  align-items: center;
-}
-
-.letter-paper-left p {
-  font-family: sans-serif;
-  font-size: 18px;
-  line-height: 1.8;
-  color: #444;
-}
-
-.letter-paper-right {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background-color: #ffe4e1;
-}
-
-.letter-photo-frame {
-  width: 85%;
-  height: 85%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: white;
-  padding: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  transform: rotate(2deg);
-}
-
-.letter-photo-frame img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-/* =========================================
-   5. เค้กและเทียน (Cake Animation) 
+   3. เค้กและเทียน (Cake Setup) 
    ========================================= */
 .cake {
   position: relative;
@@ -189,10 +61,8 @@ body {
 }
 
 /* =========================================
-   โค้ดเพิ่มเติม: ปุ่ม และ หน้าต่างจดหมาย (Modal)
+   4. ปุ่ม Click here ด้านขวาล่าง
    ========================================= */
-
-/* สไตล์ปุ่ม click here */
 .click-here-btn {
   position: fixed;
   bottom: 50px;
@@ -220,7 +90,9 @@ body {
   box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
 }
 
-/* สไตล์พื้นหลังสีเทาเข้มโปร่งแสงตอนเปิดจดหมาย */
+/* =========================================
+   5. หน้าต่างจดหมาย (Modal)
+   ========================================= */
 .modal {
   display: none; 
   position: fixed;
@@ -229,12 +101,11 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(69, 80, 91, 0.85); /* สีเทาเข้มตามในรูป */
+  background-color: rgba(69, 80, 91, 0.85); /* สีเทาเข้มโปร่งแสงตามในรูป */
   justify-content: center;
   align-items: center;
 }
 
-/* สไตล์กรอบกระดาษ */
 .modal-wrapper {
   display: flex;
   width: 800px;
@@ -261,7 +132,7 @@ body {
 }
 
 .close-btn:hover {
-  color: #333;
+  color: #ff4d4d;
 }
 
 /* ฝั่งซ้าย (ข้อความ สีครีม) */
@@ -272,6 +143,7 @@ body {
   display: flex;
   align-items: center;
   border-right: 2px dashed #bbb; /* รอยประแบ่งครึ่งกระดาษ */
+  overflow-y: auto; /* เผื่อข้อความยาวไปจะเลื่อนดูได้ */
 }
 
 .modal-left p {
@@ -289,6 +161,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
 /* สไตล์กรอบรูปโพลารอยด์ */
@@ -297,6 +170,9 @@ body {
   padding: 12px 12px 45px 12px; /* ขอบขาวล่างกว้างกว่าด้านอื่น */
   box-shadow: 0 6px 15px rgba(0,0,0,0.15);
   transform: rotate(-3deg); /* เอียงรูปเล็กน้อยให้ดูอาร์ต */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .photo-frame img {
