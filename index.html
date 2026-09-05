@@ -28,32 +28,34 @@
   <body>
     <div class="container">
       <div id="birthdayText"></div>
-      <div class="scene">
-        <div class="cake-container">
-          <div class="cake" id="cake"></div>
-        </div>
-
-        <div class="letter-wrapper" id="letterWrapper">
-          <div class="letter-hint">
-            <span>click here</span>
-            <svg class="curved-arrow" width="52" height="52" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 8 C 34 4, 54 18, 40 34 C 30 46, 22 40, 26 30" stroke="#e0526f" stroke-width="4" stroke-linecap="round" fill="none"/>
-              <path d="M17 27 L 25 31 L 21 40 Z" fill="#e0526f"/>
-            </svg>
-          </div>
-          <div class="envelope" id="envelope"></div>
-        </div>
+      <div class="cake-container">
+        <div class="cake" id="cake"></div>
       </div>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="a4-paper">
-        <button class="modal-close" id="modalClose">✕</button>
-        <div class="paper-left">
-          <div class="letter-message">สุขสันต์วันเกิดย้อนหลังนะครับ ริต้า ขอให้ริต้าสุขภาพแข็งแรง มีตังเยอะๆๆๆๆ ยิ้มสวยๆทุกวัน มีความสุขมากๆๆๆเลยยย ริวดีใจมากๆเลยครับที่ได้รู้จักริต้า ริวไม่ขอไรมากแค่ขอให้ริต้ายิ้มสวยๆในทุกวัน ไม่มีเรื่องให้ทุกข์ใจก็พอแล้วครับ มีอะไรก็บอกริวได้ ริวจะคอยรับฟังอยู่ตรงนี้เสมอๆครับ</div>
+    <!-- จดหมาย: ปุ่มเปิดจดหมาย -->
+    <div class="letter-wrapper" id="letterWrapper">
+      <div class="letter-label">click here</div>
+      <div class="letter-icon"></div>
+    </div>
+
+    <!-- จดหมาย: หน้าต่างกระดาษ A4 แนวนอน พับครึ่ง -->
+    <div class="letter-modal-overlay" id="letterModal">
+      <div class="letter-paper">
+        <button class="letter-close-btn" id="letterCloseBtn" aria-label="close">
+          &times;
+        </button>
+        <div class="letter-paper-left">
+          <p>
+            สุขสันต์วันเกิดย้อนหลังนะครับ ริต้า ขอให้ริต้าสุขภาพแข็งแรง
+            มีตังเยอะๆๆๆๆ ยิ้มสวยๆทุกวัน มีความสุขมากๆๆๆเลยยย
+            ริวดีใจมากๆเลยครับที่ได้รู้จักริต้าริวไม่ขอไรมากแค่ขอให้ริต้ายิ้มสวยๆในทุกวันไม่มีเรื่องให้ทุกข์ใจก็พอแล้วครับมีอะไรก็บอกริวได้ริวจะคอยรับฟังอยู่ตรงนี้เสมอๆครับ
+          </p>
         </div>
-        <div class="paper-right">
-          <img src="photo-placeholder.svg" alt="รูปภาพ" id="letterPhoto" />
+        <div class="letter-paper-right">
+          <div class="letter-photo-frame" id="letterPhotoFrame">
+             <img src="ritani.jpg" alt="รูปภาพ" />
+          </div>
         </div>
       </div>
     </div>
@@ -61,35 +63,15 @@
     <script>
       // Read URL params
       const params = new URLSearchParams(window.location.search);
+      const name = params.get("name") || "Friend";
       let candleCount = parseInt(params.get("candles")) || 4;
       candleCount = Math.min(Math.max(candleCount, 1), 30);
 
       const birthdayText = document.getElementById("birthdayText");
       birthdayText.innerHTML = `
-        <div id="mainTitle">Happy Birthday, Kitty!</div>
-        <div id="subTitle">กดอ่านจดหมายด้วยนะ 💌</div>
+        <div id="mainTitle">Happy Birthday, ${name}!</div>
+        <div id="subTitle">กดอ่านจดหมายด้วยนะ</div>
       `;
-
-      // Letter modal open/close
-      const modalOverlay = document.getElementById("modalOverlay");
-      const letterWrapper = document.getElementById("letterWrapper");
-      const modalClose = document.getElementById("modalClose");
-
-      function openLetter() {
-        modalOverlay.classList.add("active");
-      }
-      function closeLetter() {
-        modalOverlay.classList.remove("active");
-      }
-
-      letterWrapper.addEventListener("click", openLetter);
-      modalClose.addEventListener("click", closeLetter);
-      modalOverlay.addEventListener("click", (e) => {
-        if (e.target === modalOverlay) closeLetter();
-      });
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeLetter();
-      });
 
       const cake = document.getElementById("cake");
 
@@ -135,6 +117,27 @@
       }
 
       createCandles(candleCount);
+
+      // === Letter (จดหมาย) open / close ===
+      const letterWrapper = document.getElementById("letterWrapper");
+      const letterModal = document.getElementById("letterModal");
+      const letterCloseBtn = document.getElementById("letterCloseBtn");
+
+      function openLetter() {
+        letterModal.classList.add("active");
+      }
+      function closeLetter() {
+        letterModal.classList.remove("active");
+      }
+
+      letterWrapper.addEventListener("click", openLetter);
+      letterCloseBtn.addEventListener("click", closeLetter);
+      letterModal.addEventListener("click", (e) => {
+        if (e.target === letterModal) closeLetter();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLetter();
+      });
 
       // === Microphone / Blow Detection ===
       async function startMicDetection() {
