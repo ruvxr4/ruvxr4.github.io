@@ -13,13 +13,14 @@
     />
     <style>
       #mainTitle {
-        font-size: 32px;
+        font-size: 48px; /* ปรับขนาดตัวหนังสือ Happy Birthday ให้ใหญ่ขึ้น */
         font-family: 'Pixelify Sans', sans-serif;
         margin-bottom: 8px;
+        color: #333;
       }
 
       #subTitle {
-        font-size: 18px;
+        font-size: 20px; /* ปรับขนาดข้อความรองให้ใหญ่ขึ้นนิดหน่อยให้สมดุลกัน */
         font-family: 'Pixelify Sans', sans-serif;
         color: #555;
       }
@@ -33,7 +34,7 @@
       </div>
     </div>
 
-    <!-- จดหมาย: ปุ่มเปิดจดหมาย (ลบลูกศรออกเหลือแต่ปุ่มข้อความ click here) -->
+    <!-- จดหมาย: ปุ่มเปิดจดหมาย -->
     <div class="letter-wrapper" id="letterWrapper">
       <div class="letter-label">click here</div>
     </div>
@@ -62,14 +63,14 @@
     <script>
       // Read URL params
       const params = new URLSearchParams(window.location.search);
-      const name = params.get("name") || "Friend";
+      const name = params.get("name") || "Kitty"; // เปลี่ยนค่าเริ่มต้นจาก Friend เป็น Kitty
       let candleCount = parseInt(params.get("candles")) || 4;
       candleCount = Math.min(Math.max(candleCount, 1), 30);
 
       const birthdayText = document.getElementById("birthdayText");
       birthdayText.innerHTML = `
         <div id="mainTitle">Happy Birthday, ${name}!</div>
-        <div id="subTitle">กดอ่านจดหมายด้วยนะ</div>
+        <div id="subTitle">กดอ่านจดหมายด้วยนะ 💌</div>
       `;
 
       const cake = document.getElementById("cake");
@@ -177,7 +178,8 @@
 
             const ratio = highAvg / (lowAvg + 1);
 
-            const BLOW_RATIO_THRESHOLD = 0.5;
+            // ปรับตัวเลขตรงนี้ให้เป่าง่ายขึ้น (ลดค่าจาก 0.5 เป็น 0.3)
+            const BLOW_RATIO_THRESHOLD = 0.3;
 
             if (ratio > BLOW_RATIO_THRESHOLD && !blown) {
               blown = true;
